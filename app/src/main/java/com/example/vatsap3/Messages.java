@@ -54,7 +54,8 @@ public class Messages extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user=auth.getCurrentUser();
-                            //TODO YENİ ACTİVİTY
+                            Intent intent=new Intent(Messages.this, Arayuz.class);
+                            startActivity(intent);
                             Toast.makeText(Messages.this, "BAŞARILI", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(Messages.this, "Giriş başarısız", Toast.LENGTH_LONG)
