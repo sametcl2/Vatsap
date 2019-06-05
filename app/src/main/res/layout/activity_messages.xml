@@ -26,8 +26,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputlayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="354dp"
-        android:layout_height="62dp"
+        android:layout_width="359dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="122dp"
@@ -50,8 +50,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinoutlayout2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="355dp"
-        android:layout_height="62dp"
+        android:layout_width="360dp"
+        android:layout_height="73dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
