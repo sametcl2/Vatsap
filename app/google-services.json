@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "172397759638",
+    "firebase_url": "https://deneme-9ee11.firebaseio.com",
+    "project_id": "deneme-9ee11",
+    "storage_bucket": "deneme-9ee11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172397759638:android:488e4b7f4e8be38c",
+        "android_client_info": {
+          "package_name": "com.example.vatsap3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172397759638-42hgd5qauh68ctanagigtjhqnbqj5t1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgKEOlrRJSRrN34LzUssQ9AMmZ157A9As"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172397759638-42hgd5qauh68ctanagigtjhqnbqj5t1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
