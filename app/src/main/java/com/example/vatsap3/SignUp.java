@@ -73,13 +73,4 @@ public class SignUp extends AppCompatActivity {
         User user=new User(adSoyad, eMail, password);
         dbRef.child("users").push().setValue(user);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = auth.getCurrentUser();
-        Toast.makeText(SignUp.this, "Zaten kayitlisiniz", Toast.LENGTH_SHORT).show();
-        //FirebaseAuth.getInstance().signOut();
-    }
 }
