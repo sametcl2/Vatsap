@@ -32,17 +32,18 @@ public class SignUp extends AppCompatActivity {
 
         final TextInputEditText email=findViewById(R.id.emailSignUp);
         final TextInputEditText password=findViewById(R.id.passwordSignUp);
+        final TextInputEditText adSoyad=findViewById(R.id.adSoyad);
         Button button=findViewById(R.id.button);
 
         auth=FirebaseAuth.getInstance();
-        fDatabase=FirebaseDatabase.getInstance("users");
+        fDatabase=FirebaseDatabase.getInstance();
         dbRef=fDatabase.getReference();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createAccount(email.getText().toString(), password.getText().toString());
-                writeNewUser(email.getText().toString(), password.getText().toString());
+                writeNewUser(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
             }
         });
     }
@@ -68,9 +69,9 @@ public class SignUp extends AppCompatActivity {
                     });
     }
 
-    private void writeNewUser(String adSoyad, String eMail){
-        User user=new User(adSoyad, eMail);
-        dbRef.child("user")
+    private void writeNewUser(String eMail, String password, String adSoyad){
+        User user=new User(adSoyad, eMail, password);
+        dbRef.child("users").push().setValue(user);
     }
 
     @Override
@@ -79,5 +80,6 @@ public class SignUp extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = auth.getCurrentUser();
         Toast.makeText(SignUp.this, "Zaten kayitlisiniz", Toast.LENGTH_SHORT).show();
+        //FirebaseAuth.getInstance().signOut();
     }
 }
