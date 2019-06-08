@@ -49,7 +49,7 @@ public class SignUp extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(email.toString().isEmpty() || password.toString().isEmpty() || adSoyad.toString().isEmpty()){
+                if(email.getText().toString().isEmpty() || password.getText().toString().isEmpty() || adSoyad.getText().toString().isEmpty()){
                     Snackbar.make(layout, "Hiçbir alan boş bırakılamaz", Snackbar.LENGTH_LONG).show();
                 } else {
                     createAccount(email.getText().toString(), password.getText().toString());
