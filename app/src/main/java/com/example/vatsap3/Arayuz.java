@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,61 +40,65 @@ public class Arayuz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arayuz);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         databaseReference=FirebaseDatabase.getInstance().getReference();
         arrayList=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
-        ValueEventListener valueEventListener=new ValueEventListener() {
+        databaseReference=FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {   //Firebase veri çekme, sadece sayfa yüklenirken çekiliyor.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String adSoyad=dataSnapshot.getValue(User.class).adSoyad;
-                arrayList.add(adSoyad);
-                System.out.println(adSoyad);
+
+                for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
+                    User user=dataSnapshot2.getValue(User.class);
+                    arrayList.add(user.getAdSoyad());
+                }
+
+                adapter=new Adapter(arrayList);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        };
 
-        databaseReference.addValueEventListener(valueEventListener);
-
-        adapter=new Adapter(arrayList);
+        });
     }
 }
 
-class Adapter extends RecyclerView.Adapter<Adapter.viewHolder>{
+class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısmı
 
-    private ArrayList<String> data;
+    ArrayList<String> data;
 
-    public static class viewHolder extends RecyclerView.ViewHolder{
+    class Hodor extends RecyclerView.ViewHolder{
         TextView textView;
-        public viewHolder(@NonNull View itemView) {
+        public Hodor(@NonNull View itemView) {
             super(itemView);
             textView=itemView.findViewById(R.id.textView);
         }
     }
 
-    Adapter(ArrayList<String> data){
+    public Adapter(ArrayList<String> data){
         this.data=data;
     }
 
     @NonNull
     @Override
-    public Adapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
-        return new Adapter.viewHolder(item);
+    public Adapter.Hodor onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
+
+        return new Hodor(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Adapter.Hodor holder, int position) {
         holder.textView.setText(data.get(position));
     }
 
