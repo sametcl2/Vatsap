@@ -15,11 +15,13 @@ import com.github.bassaer.chatmessageview.model.IChatUser;
 import com.github.bassaer.chatmessageview.model.Message;
 import com.github.bassaer.chatmessageview.view.ChatView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Chat extends AppCompatActivity  {
 
     ChatView chatView;
-
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class Chat extends AppCompatActivity  {
 
         chatView=findViewById(R.id.chat_view);
         final LinearLayout layout=findViewById(R.id.layout2);
-
+        databaseReference= FirebaseDatabase.getInstance().getReference();
 
         chatView.setRightBubbleColor(ContextCompat.getColor(this, R.color.colorPrimary));
         chatView.setLeftBubbleColor(ContextCompat.getColor(this, R.color.colorAccent));

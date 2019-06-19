@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import com.github.bassaer.chatmessageview.model.IChatUser;
 
-public class User implements IChatUser {
+public class User implements IChatUser {  //ChatUI için gerekli Class
 
     String myId;
     String isim;

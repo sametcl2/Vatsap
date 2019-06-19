@@ -43,7 +43,7 @@ public class Arayuz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arayuz);
-        databaseReference=FirebaseDatabase.getInstance().getReference();
+
         arrayList=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
