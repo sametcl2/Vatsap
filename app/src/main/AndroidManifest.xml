@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Chat"></activity>
         <activity
             android:name=".Arayuz"
             android:label="@string/title_activity_arayuz"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SignUp" />
         <activity android:name=".Messages" />
         <activity android:name=".MainActivity">

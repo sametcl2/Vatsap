@@ -1,5 +1,7 @@
 package com.example.vatsap3;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,11 +79,20 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
 
     ArrayList<String> data;
 
-    class Hodor extends RecyclerView.ViewHolder{
+    class Hodor extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
         public Hodor(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             textView=itemView.findViewById(R.id.textView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getLayoutPosition();
+            Toast.makeText(itemView.getContext(), "ÇALIŞIYOR " + position, Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(v.getContext(), Chat.class);
+            v.getContext().startActivity(intent); // Context alımı
         }
     }
 
