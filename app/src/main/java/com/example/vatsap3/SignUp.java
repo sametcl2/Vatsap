@@ -93,7 +93,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void writeNewUser(String eMail, String password, String adSoyad){
-        User user=new User(adSoyad, eMail, password);
+        com.example.vatsap3.FirebaseUser user=new com.example.vatsap3.FirebaseUser(adSoyad, eMail, password);
         dbRef.child("users").push().setValue(user);
     }
 }

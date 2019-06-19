@@ -58,7 +58,7 @@ public class Arayuz extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
-                    User user=dataSnapshot2.getValue(User.class);
+                    FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
                     arrayList.add(user.getAdSoyad());
                 }
 

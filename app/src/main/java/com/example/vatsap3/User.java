@@ -1,30 +1,37 @@
 package com.example.vatsap3;
 
-public class User {
+import android.graphics.Bitmap;
 
-    private String adSoyad;
-    private String eMail;
-    private String password;
+import com.github.bassaer.chatmessageview.model.IChatUser;
 
-    public User() {
+public class User implements IChatUser {
 
+    String myId;
+    String isim;
+
+    public User(String myId, String isim){
+        this.myId=myId;
+        this.isim=isim;
     }
 
-    public User(String adSoyad, String eMail, String password){
-        this.adSoyad=adSoyad;
-        this.eMail=eMail;
-        this.password=password;
+
+    @Override
+    public Bitmap getIcon() {
+        return null;
     }
 
-    public String getAdSoyad(){
-        return adSoyad;
+    @Override
+    public String getId() {
+        return myId;
     }
 
-    public String geteMail(){
-        return eMail;
+    @Override
+    public String getName() {
+        return isim;
     }
 
-    public String getpassword(){
-        return password;
+    @Override
+    public void setIcon(Bitmap bitmap) {
+
     }
 }
