@@ -63,6 +63,7 @@ public class Messages extends AppCompatActivity {
                         if(task.isSuccessful()){
                             FirebaseUser user=auth.getCurrentUser();
                             Intent intent=new Intent(Messages.this, Arayuz.class);
+
                             startActivity(intent);
                                         Toast.makeText(Messages.this, "BAŞARILI", Toast.LENGTH_LONG).show();
                             } else {

@@ -78,6 +78,7 @@ public class Arayuz extends AppCompatActivity {
 class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısmı
 
     ArrayList<String> data;
+    public int position;
 
     class Hodor extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
@@ -92,6 +93,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
             int position = getLayoutPosition();
             Toast.makeText(itemView.getContext(), "ÇALIŞIYOR " + position, Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(v.getContext(), Chat.class);
+            intent.putExtra("you", data.get(position));
             v.getContext().startActivity(intent); // Context alımı
         }
     }
@@ -111,6 +113,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
 
     @Override
     public void onBindViewHolder(@NonNull Adapter.Hodor holder, int position) {
+        this.position=position;
         holder.textView.setText(data.get(position));
     }
 
