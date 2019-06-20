@@ -44,7 +44,6 @@ public class Chat extends AppCompatActivity  {
         setContentView(R.layout.activity_chat);
 
         chatView=findViewById(R.id.chat_view);
-        //final LinearLayout layout=findViewById(R.id.layout2);
         arrayList=new ArrayList<>();
 
         chatView.setRightBubbleColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -70,6 +69,7 @@ public class Chat extends AppCompatActivity  {
                         .setRight(true) // This message Will be shown right side.
                         .setText(chatView.getInputText()) //Message contents
                         .build();
+
                 final Message message2 = new Message.Builder()
                         .setUser(you) // Sender
                         .setRight(false) // This message Will be shown left side.

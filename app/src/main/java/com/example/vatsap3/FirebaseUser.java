@@ -5,7 +5,6 @@ public class FirebaseUser { //Firebase için gerekli Class
     private String adSoyad;
     private String eMail;
     private String password;
-    //private int id;
 
     public FirebaseUser() {
 
@@ -15,7 +14,6 @@ public class FirebaseUser { //Firebase için gerekli Class
         this.adSoyad=adSoyad;
         this.eMail=eMail;
         this.password=password;
-        //this.id=id;
     }
 
     public String getAdSoyad(){
@@ -29,9 +27,4 @@ public class FirebaseUser { //Firebase için gerekli Class
     public String getpassword(){
         return password;
     }
-
-//    public int getId(){
-//        return id;
-//    }
-
 }

@@ -67,6 +67,7 @@ public class SignUp extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 FirebaseUser user=auth.getCurrentUser();
                                 userId=user.getUid();
+                                System.out.println("Başarılı "+userId);
                                 Snackbar.make(constraintLayout, "Kayıt başarılı, ana menüye yönlendiriliyor", Snackbar.LENGTH_LONG).show();
                                 Timer timer=new Timer();
                                 timer.schedule(new TimerTask() {

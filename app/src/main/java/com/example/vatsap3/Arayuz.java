@@ -70,7 +70,6 @@ public class Arayuz extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-
         });
     }
 }
