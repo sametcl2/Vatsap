@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +31,7 @@ public class SignUp extends AppCompatActivity {
     private DatabaseReference dbRef;
     private String userId;
     ConstraintLayout constraintLayout;
+    public static ArrayList<String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class SignUp extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         fDatabase=FirebaseDatabase.getInstance();
         dbRef=fDatabase.getReference();
+        ids=new ArrayList<>();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +68,7 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                FirebaseUser user=auth.getCurrentUser();
+                                final FirebaseUser user=auth.getCurrentUser();
                                 userId=user.getUid();
                                 System.out.println("Başarılı "+userId);
                                 Snackbar.make(constraintLayout, "Kayıt başarılı, ana menüye yönlendiriliyor", Snackbar.LENGTH_LONG).show();
@@ -95,6 +98,8 @@ public class SignUp extends AppCompatActivity {
 
     private void writeNewUser(String eMail, String password, String adSoyad){
         com.example.vatsap3.FirebaseUser user=new com.example.vatsap3.FirebaseUser(adSoyad, eMail, password);
-        dbRef.child("users").push().setValue(user);
+        String id=dbRef.child("users").push().getKey();
+        ids.add(id);
+        dbRef.child("users").child(id).setValue(user);
     }
 }

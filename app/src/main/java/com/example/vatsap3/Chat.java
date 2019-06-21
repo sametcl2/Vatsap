@@ -37,6 +37,7 @@ public class Chat extends AppCompatActivity  {
     User me;
     User you;
     String mee;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class Chat extends AppCompatActivity  {
 
         chatView=findViewById(R.id.chat_view);
         arrayList=new ArrayList<>();
+        databaseReference=FirebaseDatabase.getInstance().getReference();
 
         chatView.setRightBubbleColor(ContextCompat.getColor(this, R.color.colorPrimary));
         chatView.setLeftBubbleColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -56,11 +58,12 @@ public class Chat extends AppCompatActivity  {
         chatView.setDateSeparatorColor(Color.WHITE);
 
         Intent intent=getIntent();
+        position=intent.getIntExtra("position", 0);
         String id=intent.getStringExtra("you");
         me=new User("0", "You");
         you=new User("1",id);
 
-                chatView.setOnClickSendButtonListener(new View.OnClickListener() {
+            chatView.setOnClickSendButtonListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -71,21 +74,23 @@ public class Chat extends AppCompatActivity  {
                         .build();
 
                 final Message message2 = new Message.Builder()
-                        .setUser(you) // Sender
-                        .setRight(false) // This message Will be shown left side.
-                        .setText("What's up?") //Message contents
+                        .setUser(me) // Sender
+                        .setRight(true) // This message Will be shown right side.
+                        .setText(databaseReference.child("messages").child(arrayList.get(position)).child("lastMessage").toString()) //Message contents
                         .build();
-                chatView.setInputText("");
 
-                chatView.send(message1); // Will be shown right side
-                int sendDelay = (new Random().nextInt(2) + 1) * 1000;
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        chatView.receive(message2);
-                    }
-                }, sendDelay);
+                chatView.setInputText("");
+                writeChat(chatView.getInputText());
+                chatView.send(message1);
+                chatView.receive(message2);
+
             }
         });
     }
+
+    public void writeChat(String lastMessage){
+        ChatDB chat=new ChatDB(lastMessage);
+        databaseReference.child("messages").child(arrayList.get(position)).setValue(chat);
+    }
+
 }

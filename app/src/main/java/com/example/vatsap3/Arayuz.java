@@ -93,6 +93,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
             Toast.makeText(itemView.getContext(), "ÇALIŞIYOR " + position, Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(v.getContext(), Chat.class);
             intent.putExtra("you", data.get(position));
+            intent.putExtra("position", position);
             v.getContext().startActivity(intent); // Context alımı
         }
     }
