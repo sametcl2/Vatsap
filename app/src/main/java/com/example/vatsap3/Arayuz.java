@@ -38,6 +38,8 @@ public class Arayuz extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference databaseReference;
     ArrayList<String> arrayList;
+    ArrayList<String> arrayListIds;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +47,15 @@ public class Arayuz extends AppCompatActivity {
         setContentView(R.layout.activity_arayuz);
 
         arrayList=new ArrayList<>();
+        arrayListIds=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
+        Intent intent=getIntent();
+        id=intent.getStringExtra("id");
 
         databaseReference=FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {   //Firebase veri çekme, sadece sayfa yüklenirken çekiliyor.
@@ -60,9 +65,10 @@ public class Arayuz extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
                     FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
                     arrayList.add(user.getAdSoyad());
+                    arrayListIds.add(user.getId());
                 }
 
-                adapter=new Adapter(arrayList);
+                adapter=new Adapter(arrayList, id, arrayListIds);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -77,7 +83,9 @@ public class Arayuz extends AppCompatActivity {
 class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısmı
 
     ArrayList<String> data;
+    ArrayList<String> dataIds;
     public int position;
+    String id;
 
     class Hodor extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
@@ -93,13 +101,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
             Toast.makeText(itemView.getContext(), "ÇALIŞIYOR " + position, Toast.LENGTH_SHORT).show();
             Intent intent=new Intent(v.getContext(), Chat.class);
             intent.putExtra("you", data.get(position));
-            intent.putExtra("position", position);
+            intent.putExtra("youId", dataIds.get(position));
+//            intent.putExtra("position", position);
+            intent.putExtra("id", id);
             v.getContext().startActivity(intent); // Context alımı
         }
     }
 
-    public Adapter(ArrayList<String> data){
+    public Adapter(ArrayList<String> data, String id, ArrayList<String> arrayListIds){
         this.data=data;
+        this.id=id;
+        this.dataIds=arrayListIds;
     }
 
     @NonNull

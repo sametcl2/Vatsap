@@ -29,9 +29,9 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseDatabase fDatabase;
     private DatabaseReference dbRef;
-    private String userId;
+    private static String userId;
     ConstraintLayout constraintLayout;
-    public static ArrayList<String> ids;
+//    public static ArrayList<String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class SignUp extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         fDatabase=FirebaseDatabase.getInstance();
         dbRef=fDatabase.getReference();
-        ids=new ArrayList<>();
+//        ids=new ArrayList<>();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,14 +55,15 @@ public class SignUp extends AppCompatActivity {
                 if(email.getText().toString().isEmpty() || password.getText().toString().isEmpty() || adSoyad.getText().toString().isEmpty()){
                     Snackbar.make(layout, "Hiçbir alan boş bırakılamaz", Snackbar.LENGTH_LONG).show();
                 } else {
-                    createAccount(email.getText().toString(), password.getText().toString());
-                    writeNewUser(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
+                    createAccount(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
+//                    writeNewUser(email.getText().toString(), password.getText().toString(), , userId);
+                    System.out.println("BAŞARILI ID "+ userId);
                 }
             }
         });
     }
 
-    private void createAccount(String email, String password){
+    private void createAccount(final String email, final String password, final String adSoyad){
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -70,7 +71,11 @@ public class SignUp extends AppCompatActivity {
                             if(task.isSuccessful()){
                                 final FirebaseUser user=auth.getCurrentUser();
                                 userId=user.getUid();
-                                System.out.println("Başarılı "+userId);
+                                com.example.vatsap3.FirebaseUser userr=new com.example.vatsap3.FirebaseUser(adSoyad, email, password, userId);
+                                String id=dbRef.child("users").push().getKey();
+//                                ids.add(id);
+                                dbRef.child("users").push().setValue(userr);
+//                                System.out.println("BAŞARILI ID "+ userId);
                                 Snackbar.make(constraintLayout, "Kayıt başarılı, ana menüye yönlendiriliyor", Snackbar.LENGTH_LONG).show();
                                 Timer timer=new Timer();
                                 timer.schedule(new TimerTask() {
@@ -96,10 +101,8 @@ public class SignUp extends AppCompatActivity {
                     });
     }
 
-    private void writeNewUser(String eMail, String password, String adSoyad){
-        com.example.vatsap3.FirebaseUser user=new com.example.vatsap3.FirebaseUser(adSoyad, eMail, password);
-        String id=dbRef.child("users").push().getKey();
-        ids.add(id);
-        dbRef.child("users").child(id).setValue(user);
+    private void writeNewUser(String eMail, String password, String adSoyad, String userId){
+
     }
+
 }

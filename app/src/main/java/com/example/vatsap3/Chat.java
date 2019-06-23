@@ -33,11 +33,13 @@ public class Chat extends AppCompatActivity  {
 
     ChatView chatView;
     DatabaseReference databaseReference;
-    ArrayList<String> arrayList;
+//    ArrayList<String> arrayList;
     User me;
     User you;
     String mee;
     int position;
+    String id;
+    String youId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class Chat extends AppCompatActivity  {
         setContentView(R.layout.activity_chat);
 
         chatView=findViewById(R.id.chat_view);
-        arrayList=new ArrayList<>();
+//        arrayList=new ArrayList<>();
         databaseReference=FirebaseDatabase.getInstance().getReference();
 
         chatView.setRightBubbleColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -59,9 +61,11 @@ public class Chat extends AppCompatActivity  {
 
         Intent intent=getIntent();
         position=intent.getIntExtra("position", 0);
-        String id=intent.getStringExtra("you");
-        me=new User("0", "You");
-        you=new User("1",id);
+        id=intent.getStringExtra("id");
+        youId=intent.getStringExtra("youId");
+        String isim=intent.getStringExtra("you");
+        me=new User(id, "You");
+        you=new User(youId, isim);
 
             chatView.setOnClickSendButtonListener(new View.OnClickListener() {
             @Override
@@ -74,23 +78,22 @@ public class Chat extends AppCompatActivity  {
                         .build();
 
                 final Message message2 = new Message.Builder()
-                        .setUser(me) // Sender
-                        .setRight(true) // This message Will be shown right side.
-                        .setText(databaseReference.child("messages").child(arrayList.get(position)).child("lastMessage").toString()) //Message contents
+                        .setUser(you) // Sender
+                        .setRight(false) // This message Will be shown right side.
                         .build();
 
                 chatView.setInputText("");
-                writeChat(chatView.getInputText());
+                String message=message1.getText();
+                writeChat(id, youId, message);
                 chatView.send(message1);
-                chatView.receive(message2);
 
             }
         });
     }
 
-    public void writeChat(String lastMessage){
-        ChatDB chat=new ChatDB(lastMessage);
-        databaseReference.child("messages").child(arrayList.get(position)).setValue(chat);
+    public void writeChat(String meId,String youId, String message){
+        ChatDB chat=new ChatDB(message);
+        databaseReference.child("messages").child(meId+"_"+ youId).setValue(chat);
     }
 
 }

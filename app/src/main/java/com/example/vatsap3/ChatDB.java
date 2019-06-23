@@ -2,18 +2,16 @@ package com.example.vatsap3;
 
 public class ChatDB {
 
-    String lastMessage;
+    String message;
 
     public ChatDB(){
 
     }
 
-    public ChatDB(String lastMessage){
-        this.lastMessage=lastMessage;
+    public ChatDB(String message){
+        this.message=message;
     }
-
     public String getMessage(){
-        return lastMessage;
+        return message;
     }
-
 }
