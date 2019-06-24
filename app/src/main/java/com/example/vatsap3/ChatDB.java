@@ -2,7 +2,7 @@ package com.example.vatsap3;
 
 public class ChatDB {
 
-    String message;
+    private String message;
 
     public ChatDB(){
 
