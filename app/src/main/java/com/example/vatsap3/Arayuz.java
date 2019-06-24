@@ -39,6 +39,7 @@ public class Arayuz extends AppCompatActivity {
     private DatabaseReference databaseReference;
     ArrayList<String> arrayList;
     ArrayList<String> arrayListIds;
+    ArrayList<String> eMails;
     String id;
 
     @Override
@@ -48,6 +49,7 @@ public class Arayuz extends AppCompatActivity {
 
         arrayList=new ArrayList<>();
         arrayListIds=new ArrayList<>();
+        eMails=new ArrayList<>();
         recyclerView=findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
@@ -66,9 +68,10 @@ public class Arayuz extends AppCompatActivity {
                     FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
                     arrayList.add(user.getAdSoyad());
                     arrayListIds.add(user.getId());
+                    eMails.add(user.geteMail());
                 }
 
-                adapter=new Adapter(arrayList, id, arrayListIds);
+                adapter=new Adapter(arrayList, id, arrayListIds, eMails);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -84,15 +87,18 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
 
     ArrayList<String> data;
     ArrayList<String> dataIds;
+    ArrayList<String> eMails;
     public int position;
     String id;
 
     class Hodor extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView textView;
+        TextView textView2;
         public Hodor(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             textView=itemView.findViewById(R.id.textView);
+            textView2=itemView.findViewById(R.id.textView2);
         }
 
         @Override
@@ -107,10 +113,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
         }
     }
 
-    public Adapter(ArrayList<String> data, String id, ArrayList<String> arrayListIds){
+    public Adapter(ArrayList<String> data, String id, ArrayList<String> arrayListIds, ArrayList<String> eMails){
         this.data=data;
         this.id=id;
         this.dataIds=arrayListIds;
+        this.eMails=eMails;
     }
 
     @NonNull
@@ -126,6 +133,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
     public void onBindViewHolder(@NonNull Adapter.Hodor holder, int position) {
         this.position=position;
         holder.textView.setText(data.get(position));
+        holder.textView2.setText(eMails.get(position));
     }
 
     @Override
