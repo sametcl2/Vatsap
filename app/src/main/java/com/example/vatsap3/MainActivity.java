@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
     Button button2;
     LottieAnimationView animationView;
     private FirebaseAuth auth;
-    GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInOptions gso;
-    int sign=123;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         final Timer timer =new Timer();
         button=findViewById(R.id.button);
-        SignInButton signInButton=findViewById(R.id.google);
         button2=findViewById(R.id.button2);
         animationView=findViewById(R.id.confetti);
-
         auth=FirebaseAuth.getInstance();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("416129699097-0jq3sdgc2ubks5p2l70a1jf6joqfqha1.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,43 +76,5 @@ public class MainActivity extends AppCompatActivity {
                 }, 500);
             }
         });
-    }
-
-    private void signIn(){
-        Intent signInIntent=mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, sign);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == sign){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account=task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e){
-                Toast.makeText(MainActivity.this, "Giriş başarısız", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
-        AuthCredential credential= GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser user = auth.getCurrentUser();
-                            //TODO ---> YENİ ACTİVİTY'YE GEÇİŞ
-                            Snackbar.make(findViewById(R.id.messages), "BAŞARILI giriş", Snackbar.LENGTH_LONG).show();
-                        } else {
-                            Snackbar.make(findViewById(R.id.messages), "YANLIŞ giriş", Snackbar.LENGTH_LONG).show();
-                            //TODO ---> ÖNCEKİ ACTİVİTY'YE GEÇİŞ
-                        }
-                    }
-                });
     }
 }
