@@ -18,7 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.database.ValueEventListener;
 
 
 public class Chat extends AppCompatActivity  {
@@ -65,32 +65,17 @@ public class Chat extends AppCompatActivity  {
         me=new User(id, "You");
         you=new User(youId, isim);
 
-        databaseReference2.child("messages").child(youId+"_"+id).addChildEventListener(new ChildEventListener() {
+        databaseReference2.child("messages").child(youId+"_"+id).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
-                String message=chatDB.getMessage();
+                message=chatDB.getMessage();
                 message2 = new Message.Builder()
-                        .setUser(you) // Sender
-                        .setRight(false) // This message Will be shown right side.
-                        .setText(message) //Message contents
+                        .setUser(you)
+                        .setRight(false)
+                        .setText(message)
                         .build();
                 chatView.receive(message2);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -98,6 +83,7 @@ public class Chat extends AppCompatActivity  {
 
             }
         });
+
 
             chatView.setOnClickSendButtonListener(new View.OnClickListener() {
             @Override
