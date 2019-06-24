@@ -102,7 +102,6 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
             Intent intent=new Intent(v.getContext(), Chat.class);
             intent.putExtra("you", data.get(position));
             intent.putExtra("youId", dataIds.get(position));
-//            intent.putExtra("position", position);
             intent.putExtra("id", id);
             v.getContext().startActivity(intent); // Context alımı
         }

@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.github.bassaer.chatmessageview.model.Message;
 import com.github.bassaer.chatmessageview.view.ChatView;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,10 +25,8 @@ public class Chat extends AppCompatActivity  {
     ChatView chatView;
     DatabaseReference databaseReference;
     DatabaseReference databaseReference2;
-//    ArrayList<String> arrayList;
     User me;
     User you;
-    String mee;
     int position;
     String id;
     String youId;
@@ -43,7 +40,6 @@ public class Chat extends AppCompatActivity  {
         setContentView(R.layout.activity_chat);
 
         chatView=findViewById(R.id.chat_view);
-//        arrayList=new ArrayList<>();
         databaseReference=FirebaseDatabase.getInstance().getReference();
         databaseReference2=FirebaseDatabase.getInstance().getReference();
         constraintLayout=findViewById(R.id.layout);
@@ -83,7 +79,6 @@ public class Chat extends AppCompatActivity  {
 
             }
         });
-
 
             chatView.setOnClickSendButtonListener(new View.OnClickListener() {
             @Override
