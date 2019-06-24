@@ -9,27 +9,17 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.github.bassaer.chatmessageview.model.IChatUser;
 import com.github.bassaer.chatmessageview.model.Message;
 import com.github.bassaer.chatmessageview.view.ChatView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Chat extends AppCompatActivity  {
 
@@ -45,6 +35,7 @@ public class Chat extends AppCompatActivity  {
     String youId;
     ConstraintLayout constraintLayout;
     String message;
+    Message message2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +65,7 @@ public class Chat extends AppCompatActivity  {
         me=new User(id, "You");
         you=new User(youId, isim);
 
-        databaseReference2.child("messages").addChildEventListener(new ChildEventListener() {
+        databaseReference2.child("messages").child(youId+"_"+id).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -84,6 +75,12 @@ public class Chat extends AppCompatActivity  {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
                 String message=chatDB.getMessage();
+                message2 = new Message.Builder()
+                        .setUser(you) // Sender
+                        .setRight(false) // This message Will be shown right side.
+                        .setText(message) //Message contents
+                        .build();
+                chatView.receive(message2);
             }
 
             @Override
@@ -102,13 +99,6 @@ public class Chat extends AppCompatActivity  {
             }
         });
 
-        final Message message2 = new Message.Builder()
-                .setUser(you) // Sender
-                .setRight(false) // This message Will be shown right side.
-                .setText(message) //Message contents
-                .build();
-        chatView.receive(message2);
-
             chatView.setOnClickSendButtonListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +109,6 @@ public class Chat extends AppCompatActivity  {
                         .setText(chatView.getInputText()) //Message contents
                         .build();
 
-//                System.out.println("DENEME "+youId+"_"+id);
                 chatView.setInputText("");
                 String message=message1.getText();
                 writeChat(id, youId, message);
