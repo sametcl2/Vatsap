@@ -1,9 +1,10 @@
 # Vatsap
 Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir android chat uygulaması
 
+### Kulandığım kütüphaneler:
 * Firebase Auth
 * Firebase Realtime Database
-* Lottie
+* [Lottie](https://github.com/airbnb/lottie-android)
 * [ChatView](https://github.com/bassaer/ChatMessageView)
 
 
