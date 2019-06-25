@@ -2,5 +2,5 @@
 Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir android chat uygulaması
 
 
-<img src="device-2019-06-25-090334.png" width="200" height="400">
+<img src="device-2019-06-25-090334.png" width="250" height="500">
 
