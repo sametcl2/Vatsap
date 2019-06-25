@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -53,11 +55,20 @@ public class SignUp extends AppCompatActivity {
                 if(email.getText().toString().isEmpty() || password.getText().toString().isEmpty() || adSoyad.getText().toString().isEmpty()){
                     Snackbar.make(layout, "Hiçbir alan boş bırakılamaz", Snackbar.LENGTH_LONG).show();
                 } else {
-                    createAccount(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
-                    System.out.println("BAŞARILI ID "+ userId);
+                    if(isNetworkConnected()){
+                        createAccount(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
+                    } else {
+                        System.out.println("ÇIKTI");
+                        Snackbar.make(constraintLayout, "Internet Bağlantınızı Kontrol Edin", Snackbar.LENGTH_LONG).show();
+                    }
                 }
             }
         });
+    }
+
+    private boolean isNetworkConnected(){
+        ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo() != null;
     }
 
     private void createAccount(final String email, final String password, final String adSoyad){

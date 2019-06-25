@@ -1,8 +1,12 @@
 package com.example.vatsap3;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,11 +15,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -34,11 +42,14 @@ public class Arayuz extends AppCompatActivity {
     ArrayList<String> arrayListIds;
     ArrayList<String> eMails;
     String id;
+    FirebaseAuth auth;
+    com.google.firebase.auth.FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arayuz);
+        final ConstraintLayout layout=findViewById(R.id.layout);
 
         arrayList=new ArrayList<>();
         arrayListIds=new ArrayList<>();
@@ -51,21 +62,29 @@ public class Arayuz extends AppCompatActivity {
         recyclerView.addItemDecoration(dividerItemDecoration);
         Intent intent=getIntent();
         id=intent.getStringExtra("id");
+        auth=FirebaseAuth.getInstance();
+        firebaseUser=auth.getCurrentUser();
 
         databaseReference=FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {   //Firebase veri çekme, sadece sayfa yüklenirken çekiliyor.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
-                    FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
-                    arrayList.add(user.getAdSoyad());
-                    arrayListIds.add(user.getId());
-                    eMails.add(user.geteMail());
+                if(isNetworkConnected()){
+                    for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
+                        FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
+                        arrayList.add(user.getAdSoyad());
+                        arrayListIds.add(user.getId());
+                        eMails.add(user.geteMail());
+                    }
+
+                    adapter=new Adapter(arrayList, id, arrayListIds, eMails);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Snackbar.make(layout, "Internet Bağlantınızı Kontrol Edin", Snackbar.LENGTH_LONG).show();
                 }
 
-                adapter=new Adapter(arrayList, id, arrayListIds, eMails);
-                recyclerView.setAdapter(adapter);
+
             }
 
             @Override
@@ -74,6 +93,27 @@ public class Arayuz extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isNetworkConnected(){
+        ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater menuInflater=getMenuInflater();
+//        menuInflater.inflate(R.menu.menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    public boolean onOptionsItemSelected(MenuItem menuItem){
+//        if(menuItem.getItemId() == R.id.logOut){
+//            auth.signOut();
+//            Intent intent=new Intent(Arayuz.this, Messages.class);
+//            startActivity(intent);
+//        }
+//        return false;
+//    }
 }
 
 class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısmı
