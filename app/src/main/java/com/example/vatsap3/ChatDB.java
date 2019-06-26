@@ -12,6 +12,12 @@ public class ChatDB {
         this.message=message;
     }
     public String getMessage(){
-        return message;
+        if(message != null) {
+            return message;
+        } else if(message == null) {
+            return "";
+        } else {
+            return "";
+        }
     }
 }

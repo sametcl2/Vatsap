@@ -1,7 +1,6 @@
 package com.example.vatsap3;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -64,14 +63,19 @@ public class Chat extends AppCompatActivity  {
         databaseReference2.child("messages").child(youId+"_"+id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
-                message=chatDB.getMessage();
-                message2 = new Message.Builder()
-                        .setUser(you)
-                        .setRight(false)
-                        .setText(message)
-                        .build();
-                chatView.receive(message2);
+                if(dataSnapshot.getValue() == null){
+
+                } else {
+                    ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
+                    message=chatDB.getMessage();
+                    message2 = new Message.Builder()
+                            .setUser(you)
+                            .setRight(false)
+                            .setText(message)
+                            .build();
+                    chatView.receive(message2);
+                }
+
             }
 
             @Override
