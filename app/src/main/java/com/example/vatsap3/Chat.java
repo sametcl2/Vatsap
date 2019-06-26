@@ -3,10 +3,17 @@ package com.example.vatsap3;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -52,6 +59,30 @@ public class Chat extends AppCompatActivity  {
         chatView.setSendTimeTextColor(Color.WHITE);
         chatView.setDateSeparatorColor(Color.WHITE);
 
+        NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE){
+            CharSequence name="gfsfsdfsd";
+            String description="fdsfds";
+            int importance= NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel=new NotificationChannel("ID", name, importance);
+            channel.setDescription(description);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Intent intent2=new Intent(this, Chat.class);
+        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent2,0);
+
+        final NotificationCompat.Builder builder=new NotificationCompat.Builder(this, "ID")
+                .setSmallIcon(R.drawable.icon)
+                .setContentTitle("Vatsap")
+                .setContentText("Yeni mesaj")
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+
         Intent intent=getIntent();
         position=intent.getIntExtra("position", 0);
         id=intent.getStringExtra("id");
@@ -59,6 +90,8 @@ public class Chat extends AppCompatActivity  {
         String isim=intent.getStringExtra("you");
         me=new User(id, "You");
         you=new User(youId, isim);
+
+        final NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
 
         databaseReference2.child("messages").child(youId+"_"+id).addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,6 +107,7 @@ public class Chat extends AppCompatActivity  {
                             .setText(message)
                             .build();
                     chatView.receive(message2);
+                    notificationManagerCompat.notify(0, builder.build());
                 }
 
             }
