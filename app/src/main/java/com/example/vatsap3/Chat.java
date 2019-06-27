@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.github.bassaer.chatmessageview.model.Message;
 import com.github.bassaer.chatmessageview.view.ChatView;
@@ -98,7 +99,7 @@ public class Chat extends AppCompatActivity  {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue() == null){
-
+                    Toast.makeText(Chat.this,"Bir sorun oluştu", Toast.LENGTH_SHORT).show();
                 } else {
                     if(sayac != 0){
                         ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
