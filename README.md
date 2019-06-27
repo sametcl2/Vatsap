@@ -8,5 +8,5 @@ Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir andr
 * [ChatView](https://github.com/bassaer/ChatMessageView)
 
 
-<img src="device-2019-06-25-090334.png" width="250" height="500">
+<div style="text-align:center"><img src="device-2019-06-25-090334.png" width="250" height="500"/></div>
 
