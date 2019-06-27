@@ -10,5 +10,7 @@ Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir andr
 
 <p align="center">
   <img src="device-2019-06-25-090334.png" width="250" height="500"/>
+  <img src="moto.gif" width="250" height="500"/>
 </p>
+
 
