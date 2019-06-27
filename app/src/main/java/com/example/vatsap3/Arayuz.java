@@ -98,22 +98,6 @@ public class Arayuz extends AppCompatActivity {
         ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo().isConnected();
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater menuInflater=getMenuInflater();
-//        menuInflater.inflate(R.menu.menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    public boolean onOptionsItemSelected(MenuItem menuItem){
-//        if(menuItem.getItemId() == R.id.logOut){
-//            auth.signOut();
-//            Intent intent=new Intent(Arayuz.this, Messages.class);
-//            startActivity(intent);
-//        }
-//        return false;
-//    }
 }
 
 class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısmı
@@ -142,6 +126,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.Hodor>{  //RecyclerView kısm
             intent.putExtra("you", data.get(position));
             intent.putExtra("youId", dataIds.get(position));
             intent.putExtra("id", id);
+            intent.putExtra("sayac", 0);
             v.getContext().startActivity(intent); // Context alımı
         }
     }

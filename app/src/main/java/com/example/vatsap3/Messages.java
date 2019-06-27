@@ -53,7 +53,7 @@ public class Messages extends AppCompatActivity {
                 } else {
                     if(isNetworkConnected()){
                         firebaseAuthWithEmail(email.getText().toString(), password.getText().toString());
-                    }else {
+                    } else {
                         Snackbar.make(constraintLayout, "Internet Bağlantınızı Kontrol Edin", Snackbar.LENGTH_LONG).show();
                     }
                 }

@@ -39,6 +39,7 @@ public class Chat extends AppCompatActivity  {
     ConstraintLayout constraintLayout;
     String message;
     Message message2;
+    int sayac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class Chat extends AppCompatActivity  {
 
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE){   //BİLDİRİM İÇİN CHANNEL GEREKİYOR
             CharSequence name="gfsfsdfsd";
             String description="fdsfds";
             int importance= NotificationManager.IMPORTANCE_DEFAULT;
@@ -70,14 +71,13 @@ public class Chat extends AppCompatActivity  {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Intent intent2=new Intent(this, Chat.class);
+        Intent intent2=new Intent(this, Chat.class);     //BİLDİRİM İÇİN INTENT
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent2,0);
 
         final NotificationCompat.Builder builder=new NotificationCompat.Builder(this, "ID")
-                .setSmallIcon(R.drawable.icon)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Vatsap")
-                .setContentText("Yeni mesaj")
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
@@ -87,6 +87,7 @@ public class Chat extends AppCompatActivity  {
         position=intent.getIntExtra("position", 0);
         id=intent.getStringExtra("id");
         youId=intent.getStringExtra("youId");
+        sayac=intent.getIntExtra("sayac",0);
         String isim=intent.getStringExtra("you");
         me=new User(id, "You");
         you=new User(youId, isim);
@@ -99,23 +100,26 @@ public class Chat extends AppCompatActivity  {
                 if(dataSnapshot.getValue() == null){
 
                 } else {
-                    ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
-                    message=chatDB.getMessage();
-                    message2 = new Message.Builder()
-                            .setUser(you)
-                            .setRight(false)
-                            .setText(message)
-                            .build();
-                    chatView.receive(message2);
-                    notificationManagerCompat.notify(0, builder.build());
+                    if(sayac != 0){
+                        ChatDB chatDB=dataSnapshot.getValue(ChatDB.class);
+                        message=chatDB.getMessage();
+                        message2 = new Message.Builder()
+                                .setUser(you)
+                                .setRight(false)
+                                .setText(message)
+                                .build();
+                        chatView.receive(message2);
+                        notificationManagerCompat.notify(0, builder.build());
+                    }
+                    sayac++;
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
             chatView.setOnClickSendButtonListener(new View.OnClickListener() {
