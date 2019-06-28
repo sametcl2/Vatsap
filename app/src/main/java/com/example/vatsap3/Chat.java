@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,8 +64,8 @@ public class Chat extends AppCompatActivity  {
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE){   //BİLDİRİM İÇİN CHANNEL GEREKİYOR
-            CharSequence name="gfsfsdfsd";
-            String description="fdsfds";
+            CharSequence name="bildirim";
+            String description="bildirim";
             int importance= NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel=new NotificationChannel("ID", name, importance);
             channel.setDescription(description);
@@ -100,17 +99,12 @@ public class Chat extends AppCompatActivity  {
                                 .build();
                         chatView.receive(message2);
 
-//                        Intent intent2=new Intent(Chat.this, Chat.class);     //BİLDİRİM İÇİN INTENT
-//                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        final PendingIntent pendingIntent=PendingIntent.getActivity(Chat.this,0,intent2,0);
-
                         builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ
                                 .setSmallIcon(R.drawable.ic_launcher_foreground)    //MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
                                 .setContentTitle(you.getName())
                                 .setContentText(message)
                                 .setAutoCancel(true)
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                                .setContentIntent(pendingIntent)
                                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
                         notificationManagerCompat.notify(0, builder.build());

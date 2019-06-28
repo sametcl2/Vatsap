@@ -21,9 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -83,8 +80,6 @@ public class Arayuz extends AppCompatActivity {
                 } else {
                     Snackbar.make(layout, "Internet Bağlantınızı Kontrol Edin", Snackbar.LENGTH_LONG).show();
                 }
-
-
             }
 
             @Override

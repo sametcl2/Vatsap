@@ -58,7 +58,6 @@ public class SignUp extends AppCompatActivity {
                     if(isNetworkConnected()){
                         createAccount(email.getText().toString(), password.getText().toString(), adSoyad.getText().toString());
                     } else {
-                        System.out.println("ÇIKTI");
                         Snackbar.make(constraintLayout, "Internet Bağlantınızı Kontrol Edin", Snackbar.LENGTH_LONG).show();
                     }
                 }

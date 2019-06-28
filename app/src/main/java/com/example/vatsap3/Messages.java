@@ -7,11 +7,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -76,7 +74,6 @@ public class Messages extends AppCompatActivity {
                             Intent intent=new Intent(Messages.this, Arayuz.class);
                             intent.putExtra("id", user.getUid());
                             startActivity(intent);
-                            Toast.makeText(Messages.this, "BAŞARILI", Toast.LENGTH_LONG).show();
                             } else {
                                 Snackbar.make(constraintLayout, "Giriş başarısız", Snackbar.LENGTH_SHORT).show();
                                 Timer timer=new Timer();
