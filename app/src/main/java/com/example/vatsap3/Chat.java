@@ -41,6 +41,7 @@ public class Chat extends AppCompatActivity  {
     String message;
     Message message2;
     int sayac;
+    NotificationCompat.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +73,6 @@ public class Chat extends AppCompatActivity  {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Intent intent2=new Intent(this, Chat.class);     //BİLDİRİM İÇİN INTENT
-        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent2,0);
-
-        final NotificationCompat.Builder builder=new NotificationCompat.Builder(this, "ID")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Vatsap")
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
-
         Intent intent=getIntent();
         position=intent.getIntExtra("position", 0);
         id=intent.getStringExtra("id");
@@ -110,6 +99,20 @@ public class Chat extends AppCompatActivity  {
                                 .setText(message)
                                 .build();
                         chatView.receive(message2);
+
+//                        Intent intent2=new Intent(Chat.this, Chat.class);     //BİLDİRİM İÇİN INTENT
+//                        intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        final PendingIntent pendingIntent=PendingIntent.getActivity(Chat.this,0,intent2,0);
+
+                        builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ
+                                .setSmallIcon(R.drawable.ic_launcher_foreground)    //MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
+                                .setContentTitle(you.getName())
+                                .setContentText(message)
+                                .setAutoCancel(true)
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                                .setContentIntent(pendingIntent)
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+
                         notificationManagerCompat.notify(0, builder.build());
                     }
                     sayac++;
