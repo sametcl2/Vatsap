@@ -2,8 +2,8 @@
 Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir android chat uygulaması
 
 ## Kulandığım kütüphaneler ve Firebase sistemleri:
-* Firebase Auth
-* Firebase Realtime Database
+* [Firebase Auth](https://firebase.google.com/)
+* [Firebase Realtime Database](https://firebase.google.com/)
 * [Lottie](https://github.com/airbnb/lottie-android)
 * [ChatView](https://github.com/bassaer/ChatMessageView)
 
