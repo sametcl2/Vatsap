@@ -7,6 +7,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -25,8 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
 
-public class Chat extends AppCompatActivity  {
+
+public class Chat extends AppCompatActivity {
 
     ChatView chatView;
     DatabaseReference databaseReference;
@@ -40,12 +45,14 @@ public class Chat extends AppCompatActivity  {
     String message;
     Message message2;
     int sayac;
-    NotificationCompat.Builder builder;
+    String packageName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        packageName=getApplicationContext().getPackageName();
 
         chatView=findViewById(R.id.chat_view);
         databaseReference=FirebaseDatabase.getInstance().getReference();
@@ -61,6 +68,46 @@ public class Chat extends AppCompatActivity  {
         chatView.setSendTimeTextColor(Color.WHITE);
         chatView.setDateSeparatorColor(Color.WHITE);
 
+        Intent intent=getIntent();
+        position=intent.getIntExtra("position", 0);
+        id=intent.getStringExtra("id");
+        youId=intent.getStringExtra("youId");
+        sayac=intent.getIntExtra("sayac",0);
+        String isim=intent.getStringExtra("you");
+        me=new User(id, "You");
+        you=new User(youId, isim);
+
+        detect();
+
+        chatView.setOnClickSendButtonListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Message message1 = new Message.Builder()
+                        .setUser(me) // Sender
+                        .setRight(true) // This message Will be shown right side.
+                        .setText(chatView.getInputText()) //Message contents
+                        .build();
+
+
+
+                chatView.setInputText("");
+                String message=message1.getText();
+                writeChat(id, youId, message);
+                chatView.send(message1);
+
+            }
+        });
+    }
+
+    public void writeChat(String meId,String youId, String message){
+        ChatDB chat=new ChatDB(message);
+        databaseReference.child("messages").child(meId+"_"+ youId).setValue(chat);
+    }
+
+    public void sendNotification(){
+        NotificationCompat.Builder builder;
+
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE){   //BİLDİRİM İÇİN CHANNEL GEREKİYOR
@@ -72,17 +119,22 @@ public class Chat extends AppCompatActivity  {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Intent intent=getIntent();
-        position=intent.getIntExtra("position", 0);
-        id=intent.getStringExtra("id");
-        youId=intent.getStringExtra("youId");
-        sayac=intent.getIntExtra("sayac",0);
-        String isim=intent.getStringExtra("you");
-        me=new User(id, "You");
-        you=new User(youId, isim);
-
         final NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
 
+        builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ
+                .setSmallIcon(R.drawable.ic_launcher_foreground)    //MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
+                .setContentTitle(you.getName())
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+
+        notificationManagerCompat.notify(0, builder.build());
+
+
+    }
+
+    public void detect(){
         databaseReference2.child("messages").child(youId+"_"+id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -99,15 +151,10 @@ public class Chat extends AppCompatActivity  {
                                 .build();
                         chatView.receive(message2);
 
-                        builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ
-                                .setSmallIcon(R.drawable.ic_launcher_foreground)    //MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
-                                .setContentTitle(you.getName())
-                                .setContentText(message)
-                                .setAutoCancel(true)
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+                        if(!isAppOnForeground(getApplicationContext(), packageName)){
+                            sendNotification();
+                        }
 
-                        notificationManagerCompat.notify(0, builder.build());
                     }
                     sayac++;
                 }
@@ -119,29 +166,21 @@ public class Chat extends AppCompatActivity  {
             }
 
         });
+    }
 
-            chatView.setOnClickSendButtonListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final Message message1 = new Message.Builder()
-                        .setUser(me) // Sender
-                        .setRight(true) // This message Will be shown right side.
-                        .setText(chatView.getInputText()) //Message contents
-                        .build();
-
-                chatView.setInputText("");
-                String message=message1.getText();
-                writeChat(id, youId, message);
-                chatView.send(message1);
-
+    private boolean isAppOnForeground(Context context,String appPackageName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = appPackageName;
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    && appProcess.processName.equals(packageName)) {
+                return true;
             }
-        });
+        }
+        return false;
     }
-
-    public void writeChat(String meId,String youId, String message){
-        ChatDB chat=new ChatDB(message);
-        databaseReference.child("messages").child(meId+"_"+ youId).setValue(chat);
-    }
-
 }

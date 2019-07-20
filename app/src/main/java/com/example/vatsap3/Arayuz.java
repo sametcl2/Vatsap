@@ -57,8 +57,8 @@ public class Arayuz extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        Intent intent=getIntent();
-        id=intent.getStringExtra("id");
+        final Intent intent=getIntent();
+
         auth=FirebaseAuth.getInstance();
         firebaseUser=auth.getCurrentUser();
 
@@ -66,13 +66,16 @@ public class Arayuz extends AppCompatActivity {
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {   //Firebase veri çekme, sadece sayfa yüklenirken çekiliyor.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                id=intent.getStringExtra("id");
+                FirebaseUser user;
                 if(isNetworkConnected()){
                     for(DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()){
-                        FirebaseUser user=dataSnapshot2.getValue(FirebaseUser.class);
-                        arrayList.add(user.getAdSoyad());
-                        arrayListIds.add(user.getId());
-                        eMails.add(user.geteMail());
+                        user=dataSnapshot2.getValue(FirebaseUser.class);
+                        if(user.getId() != id){
+                            arrayList.add(user.getAdSoyad());
+                            arrayListIds.add(user.getId());
+                            eMails.add(user.geteMail());
+                        }
                     }
 
                     adapter=new Adapter(arrayList, id, arrayListIds, eMails);
