@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -121,12 +122,13 @@ public class Chat extends AppCompatActivity {
 
         final NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(this);
 
-        builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ
-                .setSmallIcon(R.drawable.ic_launcher_foreground)    //MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
+        builder=new NotificationCompat.Builder(Chat.this, "ID") //BİLDİRİM İÇİN GEREKLİ  MESAJIN BİLDİRİMDE GÖRÜNMESİ İÇİN İÇERDE TANIMLADIM
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(you.getName())
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 
         notificationManagerCompat.notify(0, builder.build());
@@ -167,6 +169,8 @@ public class Chat extends AppCompatActivity {
 
         });
     }
+
+    //PROGRAMIN ARKAPLANDA OLUP OLMADIĞINI TESPİT ETMEK İÇİN GEREKLİ FONKSİYON. STACKOVERFLOW'DAN (Ç)ALDIM.
 
     private boolean isAppOnForeground(Context context,String appPackageName) {
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
