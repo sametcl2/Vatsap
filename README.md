@@ -1,5 +1,5 @@
 # Vatsap
-Firebase ve çeşitli 3. parti kütüphaneler kullanarak oluşturduğum bir android chat uygulaması
+Firebase ve çeşitli kütüphaneler kullanarak oluşturduğum bir android chat uygulaması
 
 ## Kulandığım kütüphaneler ve Firebase sistemleri:
 * [Firebase Auth](https://firebase.google.com/)
